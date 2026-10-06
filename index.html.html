@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMULATION CODÉCISION (POLI-O409) — Portail Officiel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        eu: {
+                            blue: '#003399',
+                            gold: '#FFCC00',
+                            darkBlue: '#001A4D',
+                            lightBlue: '#E6ECF5'
+                        },
+                        ep: {
+                            red: '#C0392B',
+                            lightRed: '#FDEDEC'
+                        },
+                        council: {
+                            blue: '#002266',
+                            lightBlue: '#EBF3FA'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styling for sleek scrollbars and transitions */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .tab-btn.active {
+            border-bottom: 3px solid #FFCC00;
+            color: #ffffff;
+            font-weight: 600;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-yellow-200">
+
+    <!-- Top EU Bar -->
+    <div class="bg-eu-darkBlue text-white text-xs py-1.5 px-4 flex justify-between items-center border-b border-blue-900">
+        <div class="flex items-center space-x-3">
+            <span class="flex items-center font-bold tracking-wider text-yellow-400">
+                <i class="fa-solid font-bold text-xs me-1">🇪🇺</i> UNIVERSITÉ LIBRE DE BRUXELLES
+            </span>
+            <span class="text-slate-400">|</span>
+            <span class="text-slate-300">POLI-O409 — Simulation de la Procédure Législative Ordinaire</span>
+        </div>
+        <div class="flex items-center space-x-4 text-xs">
+            <span id="current-date-badge" class="bg-blue-950 px-2 py-0.5 rounded border border-blue-800 text-slate-300">
+                <i class="fa-regular fa-calendar-check me-1"></i> Octobre - Décembre 2026
+            </span>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="bg-eu-blue text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-lg bg-yellow-400 text-eu-blue flex items-center justify-center font-extrabold text-2xl shadow">
+                        ★
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                            SIMULATION CODÉCISION <span class="text-xs bg-yellow-400 text-eu-blue font-bold px-2 py-0.5 rounded">POLI-O409</span>
+                        </h1>
+                        <p class="text-xs sm:text-sm text-blue-200">Portail Officiel des Secrétariats &amp; Organes Législatifs de l'Union Européenne</p>
+                    </div>
+                </div>
+
+                <!-- Co-Managed Secretariat Box -->
+                <div class="bg-blue-950/80 border border-blue-800/80 rounded-xl p-3 text-xs flex flex-col sm:flex-row gap-3 sm:gap-6 shadow-inner">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-8 h-8 rounded-full bg-council-blue border border-yellow-400 text-white flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-building-columns text-xs"></i>
+                        </div>
+                        <div>
+                            <div class="text-blue-300 uppercase text-[10px] tracking-wider font-semibold">Secrétariat Général du Conseil</div>
+                            <div class="font-semibold text-white">Souhaib HOUMAID BENYAZZA</div>
+                        </div>
+                    </div>
+                    <div class="hidden sm:block border-r border-blue-800"></div>
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-8 h-8 rounded-full bg-ep-red text-white flex items-center justify-center font-bold shadow">
+                            <i class="fa-solid fa-landmark text-xs"></i>
+                        </div>
+                        <div>
+                            <div class="text-blue-300 uppercase text-[10px] tracking-wider font-semibold">Secrétariat Général du PE</div>
+                            <div class="font-semibold text-white">Nora AFIFI</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="bg-blue-950/90 border-t border-blue-800 text-slate-300 text-xs sm:text-sm">
+            <div class="max-w-7xl mx-auto px-2 sm:px-6 flex overflow-x-auto no-scrollbar">
+                <button onclick="switchTab('tab-home')" id="btn-tab-home" class="tab-btn active px-4 py-3 font-medium whitespace-nowrap transition-colors duration-150 flex items-center gap-2">
+                    <i class="fa-solid fa-house"></i> Accueil &amp; Progression
+                </button>
+                <button onclick="switchTab('tab-calendar')" id="btn-tab-calendar" class="tab-btn px-4 py-3 font-medium whitespace-nowrap transition-colors duration-150 flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-days"></i> Calendrier Officiel
+                </button>
+                <button onclick="switchTab('tab-council')" id="btn-tab-council" class="tab-btn px-4 py-3 font-medium whitespace-nowrap transition-colors duration-150 flex items-center gap-2">
+                    <i class="fa-solid fa-building-columns"></i> Conseil &amp; Calculateur QMV
+                </button>
+                <button onclick="switchTab('tab-pe')" id="btn-tab-pe" class="tab-btn px-4 py-3 font-medium whitespace-nowrap transition-colors duration-150 flex items-center gap-2">
+                    <i class="fa-solid fa-users-rectangle"></i> PE, Commission &amp; Médias
+                </button>
+                <button onclick="switchTab('tab-matrix')" id="btn-tab-matrix" class="tab-btn px-4 py-3 font-medium whitespace-nowrap transition-colors duration-150 flex items-center gap-2">
+                    <i class="fa-solid fa-table-columns"></i> Matrice 4 Colonnes
+                </button>
+                <button onclick="switchTab('tab-amendments')" id="btn-tab-amendments" class="tab-btn px-4 py-3 font-medium whitespace-nowrap transition-colors duration-150 flex items-center gap-2 text-yellow-300 font-semibold">
+                    <i class="fa-solid fa-pen-to-square"></i> Soumission Amendement
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- TAB 1: ACCUEIL & PROGRESSION -->
+        <section id="tab-home" class="space-y-6">
+            <!-- Alert Banner -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-sm flex items-start justify-between">
+                <div class="flex items-start space-x-3">
+                    <i class="fa-solid fa-circle-exclamation text-amber-600 text-xl mt-0.5"></i>
+                    <div>
+                        <h3 class="text-sm font-semibold text-amber-900">Rappel aux Délégations et Eurodéputés</h3>
+                        <p class="text-xs text-amber-800 mt-0.5">
+                            La première lecture est en cours. Consultez régulièrement le calendrier ci-dessous pour ne pas manquer les dates limites de dépôt d'exposés de position et d'amendements.
+                        </p>
+                    </div>
+                </div>
+                <span class="text-xs font-semibold bg-amber-200 text-amber-900 px-2 py-1 rounded">Session 2026</span>
+            </div>
+
+            <!-- Legislative Workflow Tracker -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-route text-eu-blue"></i> État d'Avancement de la Procédure Législative Ordinaire
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3 relative">
+                    <!-- Step 1 -->
+                    <div class="border border-green-300 bg-green-50 p-4 rounded-xl relative">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-green-700 uppercase">Étape 1</span>
+                            <span class="text-xs bg-green-200 text-green-800 px-2 py-0.5 rounded font-bold"><i class="fa-solid fa-check me-1"></i>Complété</span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm">Proposition Commission</h4>
+                        <p class="text-xs text-slate-600 mt-1">Saisine des institutions, mise en route du site &amp; réunions préparatoires.</p>
+                        <div class="text-[11px] text-slate-500 mt-2 font-medium"><i class="fa-regular fa-clock"></i> 06/10 - 16/10</div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="border-2 border-eu-blue bg-blue-50/70 p-4 rounded-xl relative shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-eu-blue uppercase">Étape 2</span>
+                            <span class="text-xs bg-eu-blue text-white px-2 py-0.5 rounded font-bold animate-pulse">En cours</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">Positions &amp; COREPER I</h4>
+                        <p class="text-xs text-slate-600 mt-1">Exposés de position PE &amp; Conseil, projet de rapport de la Rapporteur.</p>
+                        <div class="text-[11px] text-eu-blue mt-2 font-bold"><i class="fa-regular fa-clock"></i> 19/10 - 26/10</div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="border border-slate-200 bg-slate-50 p-4 rounded-xl opacity-80">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-slate-500 uppercase">Étape 3</span>
+                            <span class="text-xs bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-bold">À venir</span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm">Amendements &amp; Votes PE</h4>
+                        <p class="text-xs text-slate-600 mt-1">Dépôt des amendements, mandat de négociation de la Commission PE.</p>
+                        <div class="text-[11px] text-slate-500 mt-2 font-medium"><i class="fa-regular fa-clock"></i> 03/11 - 17/11</div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="border border-slate-200 bg-slate-50 p-4 rounded-xl opacity-80">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-slate-500 uppercase">Étape 4</span>
+                            <span class="text-xs bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-bold">À venir</span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm">Approche Générale Conseil</h4>
+                        <p class="text-xs text-slate-600 mt-1">Présidence Irlande &amp; adoption du mandat de négociation au Conseil.</p>
+                        <div class="text-[11px] text-slate-500 mt-2 font-medium"><i class="fa-regular fa-clock"></i> 23/11 - 27/11</div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="border border-slate-200 bg-slate-50 p-4 rounded-xl opacity-80">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-slate-500 uppercase">Étape 5</span>
+                            <span class="text-xs bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-bold">À venir</span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm">Trilogue &amp; Clôture</h4>
+                        <p class="text-xs text-slate-600 mt-1">Tableau 4 colonnes, négociations directes, approbation &amp; dossier final.</p>
+                        <div class="text-[11px] text-slate-500 mt-2 font-medium"><i class="fa-regular fa-clock"></i> 30/11 - 18/12</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News & Announcements Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Official Bulletins (Conseil & PE) -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between mb-4 border-b pb-3">
+                        <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-bullhorn text-eu-blue"></i> Communiqués Officiels des Secrétariats
+                        </h3>
+                        <span class="text-xs font-medium text-slate-500">Fil d'actualité</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-council-blue">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-bold text-council-blue uppercase tracking-wider">
+                                    <i class="fa-solid fa-building-columns me-1"></i> Secrétariat Conseil (S. Houmaid Benyazza)
+                                </span>
+                                <span class="text-[11px] text-slate-400">Aujourd'hui</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Ordre du jour de la réunion COREPER I fixé</h4>
+                            <p class="text-xs text-slate-600 mt-1">
+                                La Présidence Irlandaise (Kenny Agboton) rappelle à toutes les délégations nationales de préparer leurs positions liminaires pour le vote sur l'approche générale d'ici le 23/11.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-ep-red">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-bold text-ep-red uppercase tracking-wider">
+                                    <i class="fa-solid fa-landmark me-1"></i> Secrétariat PE (N. Afifi)
+                                </span>
+                                <span class="text-[11px] text-slate-400">Hier</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Publication imminente du Projet de Rapport</h4>
+                            <p class="text-xs text-slate-600 mt-1">
+                                La Rapporteur Talie ERGÖÇMEZ (S&amp;D) finalise le draft report avec les Coordinateurs. Le délai strict de dépôt d'amendements est fixé au Mardi 3/11 à 22h.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-amber-50/50 rounded-xl border-l-4 border-amber-500">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-bold text-amber-800 uppercase tracking-wider">
+                                    <i class="fa-solid fa-triangle-exclamation me-1"></i> Rappel Technique
+                                </span>
+                                <span class="text-[11px] text-slate-400">Permanent</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Remise du Dossier Final (18/12 - 12h)</h4>
+                            <p class="text-xs text-slate-600 mt-1">
+                                L'ensemble des délégations et députés doit déposer le dossier de négociation final sur l'UV de l'ULB ainsi qu'en version papier.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Press & Media Widget -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4 border-b pb-3">
+                            <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                <i class="fa-solid fa-newspaper text-emerald-600"></i> Revue de Presse
+                            </h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">Médias Accreditation</span>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Euractiv -->
+                            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-black text-xs text-amber-700 tracking-wider">EURACTIV</span>
+                                    <span class="text-[10px] text-slate-400">Julien ROHAUT</span>
+                                </div>
+                                <p class="text-xs font-medium text-slate-800">
+                                    "Les clivages s'intensifient au PE entre le PPE et les S&amp;D sur le mandat de négociation."
+                                </p>
+                            </div>
+
+                            <!-- Politico -->
+                            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-black text-xs text-red-700 tracking-wider">POLITICO</span>
+                                    <span class="text-[10px] text-slate-400">Anastasia ABRAMOVA</span>
+                                </div>
+                                <p class="text-xs font-medium text-slate-800">
+                                    "Bruxelles en ébullition : la Commission DG JUST maintient la pression avant le Trilogue du 1er décembre."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Download Links -->
+                    <div class="mt-6 pt-4 border-t border-slate-200">
+                        <h4 class="text-xs font-bold text-slate-700 mb-2">Documents Requis</h4>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <button onclick="switchTab('tab-matrix')" class="p-2 bg-slate-100 hover:bg-slate-200 rounded text-slate-700 text-center font-medium transition">
+                                <i class="fa-solid fa-file-invoice block mb-1 text-slate-500"></i> Tableau 4 Colonnes
+                            </button>
+                            <button onclick="switchTab('tab-amendments')" class="p-2 bg-slate-100 hover:bg-slate-200 rounded text-slate-700 text-center font-medium transition">
+                                <i class="fa-solid fa-file-signature block mb-1 text-slate-500"></i> Formulaire AM
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: CALENDRIER COMPLET -->
+        <section id="tab-calendar" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-check text-eu-blue"></i> Calendrier Officiel de la Simulation
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1">Planning exhaustif extrait des documents officiels de POLI-O409</p>
+                    </div>
+
+                    <!-- Filter Buttons -->
+                    <div class="flex flex-wrap gap-1.5 text-xs">
+                        <button onclick="filterCalendar('all')" id="cal-filter-all" class="px-3 py-1.5 rounded-lg bg-eu-blue text-white font-semibold transition shadow-sm">
+                            Tous
+                        </button>
+                        <button onclick="filterCalendar('pe')" id="cal-filter-pe" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 font-semibold hover:bg-slate-200 transition">
+                            Parlement (PE)
+                        </button>
+                        <button onclick="filterCalendar('conseil')" id="cal-filter-conseil" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 font-semibold hover:bg-slate-200 transition">
+                            Conseil
+                        </button>
+                        <button onclick="filterCalendar('commission')" id="cal-filter-commission" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 font-semibold hover:bg-slate-200 transition">
+                            Commission
+                        </button>
+                        <button onclick="filterCalendar('joint')" id="cal-filter-joint" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 font-semibold hover:bg-slate-200 transition">
+                            Trilogue / Joint
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Calendar Timeline Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                        <thead class="bg-slate-100 text-slate-700 text-xs uppercase font-bold tracking-wider">
+                            <tr>
+                                <th class="p-3.5 border-b rounded-tl-lg">Date / Échéance</th>
+                                <th class="p-3.5 border-b">Acteur / Institution Concernée</th>
+                                <th class="p-3.5 border-b">Action &amp; Livrable Exigé</th>
+                                <th class="p-3.5 border-b rounded-tr-lg">Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendar-body" class="divide-y divide-slate-100">
+                            <!-- Filled dynamically by JS from extracted calendar array -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: CONSEIL & CALCULATEUR QMV -->
+        <section id="tab-council" class="hidden space-y-6">
+            <!-- Council Top Info -->
+            <div class="bg-council-blue text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="bg-yellow-400 text-council-blue text-xs font-bold px-2.5 py-1 rounded uppercase tracking-wider">
+                            Présidence du Conseil
+                        </span>
+                        <h2 class="text-2xl font-black mt-2">IRLANDE <span class="text-base font-normal text-blue-200">(Kenny AGBOTON)</span></h2>
+                        <p class="text-xs text-blue-200 mt-1">Secrétaire Général du Conseil: <strong class="text-white">Souhaib HOUMAID BENYAZZA</strong></p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 text-xs text-slate-100 max-w-xs">
+                        <div class="font-bold mb-1 text-yellow-300"><i class="fa-solid fa-gavel me-1"></i> Rôle de la Présidence</div>
+                        Conduite des travaux du Conseil, médiation des négociations pour l'adoption de l'Approche Générale.
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Live QMV Voting Tool -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between mb-4 border-b pb-3">
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                <i class="fa-solid fa-calculator text-council-blue"></i> Calculateur de Majorité Qualifiée (QMV)
+                            </h3>
+                            <p class="text-xs text-slate-500">Sélectionnez les États membres favorables pour calculer le vote du Conseil.</p>
+                        </div>
+                        <button onclick="resetQMV()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg transition font-medium">
+                            <i class="fa-solid fa-rotate-right me-1"></i> Réinitialiser
+                        </button>
+                    </div>
+
+                    <!-- Rule Bar Status -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <!-- Rule 1: Member States (55% / 15 of 27) -->
+                        <div id="rule-ms-card" class="p-4 rounded-xl border border-slate-200 bg-slate-50 transition">
+                            <div class="flex justify-between items-center text-xs mb-1">
+                                <span class="font-bold text-slate-700">Seuil États Membres (≥ 55% / 15 ms)</span>
+                                <span id="qmv-ms-status" class="font-bold text-red-600">Non Atteint</span>
+                            </div>
+                            <div class="text-2xl font-extrabold text-slate-900" id="qmv-ms-count">0 / 27</div>
+                            <div class="w-full bg-slate-200 h-2.5 rounded-full mt-2 overflow-hidden">
+                                <div id="qmv-ms-bar" class="bg-red-500 h-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <div class="text-[11px] text-slate-500 mt-1" id="qmv-ms-pct">0% des États Membres</div>
+                        </div>
+
+                        <!-- Rule 2: Population (65%) -->
+                        <div id="rule-pop-card" class="p-4 rounded-xl border border-slate-200 bg-slate-50 transition">
+                            <div class="flex justify-between items-center text-xs mb-1">
+                                <span class="font-bold text-slate-700">Seuil Population (≥ 65%)</span>
+                                <span id="qmv-pop-status" class="font-bold text-red-600">Non Atteint</span>
+                            </div>
+                            <div class="text-2xl font-extrabold text-slate-900" id="qmv-pop-count">0%</div>
+                            <div class="w-full bg-slate-200 h-2.5 rounded-full mt-2 overflow-hidden">
+                                <div id="qmv-pop-bar" class="bg-red-500 h-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <div class="text-[11px] text-slate-500 mt-1" id="qmv-pop-detail">Population UE représentée</div>
+                        </div>
+                    </div>
+
+                    <!-- Overall Decision Badge -->
+                    <div id="qmv-final-decision" class="p-3 rounded-xl bg-red-100 text-red-800 text-center font-bold text-sm mb-6 border border-red-200 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-circle-xmark text-lg"></i>
+                        <span>L'Approche Générale est actuellement REJETÉE par le Conseil.</span>
+                    </div>
+
+                    <!-- Member States Checkboxes Grid -->
+                    <div class="border-t pt-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <h4 class="text-xs font-bold text-slate-700 uppercase">Délégués des 27 États Membres</h4>
+                            <div class="space-x-2 text-xs">
+                                <button onclick="selectAllQMV(true)" class="text-eu-blue font-semibold hover:underline">Tout cocher</button>
+                                <span class="text-slate-300">|</span>
+                                <button onclick="selectAllQMV(false)" class="text-slate-500 font-semibold hover:underline">Tout décocher</button>
+                            </div>
+                        </div>
+
+                        <div id="member-states-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs max-h-96 overflow-y-auto pr-1">
+                            <!-- Populated dynamically by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Council Delegations List Sidebar -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="font-bold text-slate-900 text-base mb-3 border-b pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-users text-council-blue"></i> Répertoire du Conseil
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Liste complète des délégués nationaux affectés (POLI-O409).</p>
+
+                    <div id="council-delegates-list" class="space-y-2 text-xs max-h-[500px] overflow-y-auto pr-1">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: PARLEMENT EUROPÉEN, COMMISSION & MÉDIAS -->
+        <section id="tab-pe" class="hidden space-y-6">
+            <!-- EP Header -->
+            <div class="bg-ep-red text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl">
+                    <i class="fa-solid fa-landmark"></i>
+                </div>
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="bg-white text-ep-red text-xs font-bold px-2.5 py-1 rounded uppercase tracking-wider">
+                            Parlement Européen
+                        </span>
+                        <h2 class="text-2xl font-black mt-2">Groupes Politiques &amp; Eurodéputés</h2>
+                        <p class="text-xs text-red-100 mt-1">Secrétaire Général du PE: <strong class="text-white">Nora AFIFI</strong></p>
+                    </div>
+                    <div class="bg-black/20 backdrop-blur-md border border-white/20 rounded-xl p-4 text-xs text-white max-w-xs">
+                        <div class="font-bold mb-1 text-yellow-300"><i class="fa-solid fa-circle-info me-1"></i> Clé de Répartition</div>
+                        8 Groupes Politiques représentés pour la simulation du rapport sur la procédure de codécision.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Political Groups Grid -->
+            <div id="ep-groups-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- EP Political Groups inserted via JS -->
+            </div>
+
+            <!-- Commission & Media Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                <!-- Commission Européenne -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex items-center space-x-3 border-b pb-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-yellow-400 text-eu-blue flex items-center justify-center font-bold text-xl shadow-sm">
+                            🇪🇺
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base">Commission Européenne</h3>
+                            <p class="text-xs text-slate-500">DG JUSTICE (DG JUST)</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3 bg-blue-50/60 rounded-xl border border-blue-100 flex items-center justify-between">
+                            <div>
+                                <div class="font-bold text-slate-900">Zack BALZAN</div>
+                                <div class="text-slate-500">Commissaire Européen DG JUST</div>
+                            </div>
+                            <span class="bg-blue-200 text-blue-900 px-2 py-0.5 rounded font-semibold text-[10px]">Commissaire</span>
+                        </div>
+
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+                            <div>
+                                <div class="font-bold text-slate-900">Ginevra LANDINI</div>
+                                <div class="text-slate-500">Directeur Général (DG Justice - Ana Gallego Torres)</div>
+                            </div>
+                            <span class="bg-slate-200 text-slate-800 px-2 py-0.5 rounded font-semibold text-[10px]">Directrice Générale</span>
+                        </div>
+
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+                            <div>
+                                <div class="font-bold text-slate-900">Irène CURTO</div>
+                                <div class="text-slate-500">Head of Unit (Policy &amp; Legal Expert)</div>
+                            </div>
+                            <span class="bg-slate-200 text-slate-800 px-2 py-0.5 rounded font-semibold text-[10px]">Expert Juridique</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Media Corps -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex items-center space-x-3 border-b pb-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-xl shadow-sm">
+                            <i class="fa-solid fa-microphone-lines"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base">Corps de la Presse &amp; Médias</h3>
+                            <p class="text-xs text-slate-500">Journalistes Accrédités</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3 bg-amber-50/80 rounded-xl border border-amber-200 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="font-black text-amber-800 text-sm tracking-wide">EURACTIV</span>
+                                <div>
+                                    <div class="font-bold text-slate-900">Julien ROHAUT</div>
+                                    <div class="text-slate-500">Correspondant EU Affairs</div>
+                                </div>
+                            </div>
+                            <span class="bg-amber-200 text-amber-900 px-2 py-0.5 rounded font-semibold text-[10px]">Presse</span>
+                        </div>
+
+                        <div class="p-3 bg-red-50/80 rounded-xl border border-red-200 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="font-black text-red-700 text-sm tracking-wide">POLITICO</span>
+                                <div>
+                                    <div class="font-bold text-slate-900">Anastasia ABRAMOVA</div>
+                                    <div class="text-slate-500">Rédactrice Politique Pro</div>
+                                </div>
+                            </div>
+                            <span class="bg-red-200 text-red-900 px-2 py-0.5 rounded font-semibold text-[10px]">Presse</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: MATRICE 4 COLONNES (TRILOGUE) -->
+        <section id="tab-matrix" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-table-columns text-eu-blue"></i> Tableau à 4 Colonnes pour les Négociations de Trilogue
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1">Comparatif article par article des positions institutionnelles et propositions de compromis.</p>
+                    </div>
+
+                    <!-- Matrix Controls -->
+                    <div class="flex items-center space-x-3">
+                        <input type="text" id="matrix-search" onkeyup="filterMatrix()" placeholder="Rechercher dans la matrice..." class="text-xs border border-slate-300 rounded-lg px-3 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-eu-blue">
+                        <button onclick="filterMatrix()" class="bg-eu-blue text-white text-xs px-3 py-2 rounded-lg font-semibold hover:bg-blue-800 transition">
+                            <i class="fa-solid fa-magnifying-glass me-1"></i> Filtrer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4-Column Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse min-w-[900px]">
+                        <thead class="bg-slate-100 text-slate-800 font-bold uppercase tracking-wider border-b">
+                            <tr>
+                                <th class="p-3 w-1/4 border-r bg-blue-50/50 text-blue-900">1. Proposition Commission</th>
+                                <th class="p-3 w-1/4 border-r bg-red-50/50 text-red-900">2. Position PE (Amendements)</th>
+                                <th class="p-3 w-1/4 border-r bg-indigo-50/50 text-indigo-900">3. Approche Générale Conseil</th>
+                                <th class="p-3 w-1/4 bg-emerald-50/50 text-emerald-900">4. Texte de Compromis (Trilogue)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matrix-tbody" class="divide-y divide-slate-200">
+                            <!-- Article 1 -->
+                            <tr class="matrix-row">
+                                <td class="p-3 border-r align-top bg-slate-50/30">
+                                    <div class="font-bold text-slate-900 mb-1">Article 1 - Objet</div>
+                                    <p class="text-slate-600">La présente directive établit des règles minimales concernant l'harmonisation des procédures de protection des données au sein du marché intérieur.</p>
+                                </td>
+                                <td class="p-3 border-r align-top">
+                                    <div class="font-bold text-ep-red mb-1">AM 1 (S&amp;D / Verts)</div>
+                                    <p class="text-slate-600">La présente directive établit des règles <span class="bg-yellow-200 font-semibold">strictes et renforcées</span> concernant la protection absolue des droits fondamentaux dans le marché numérique.</p>
+                                </td>
+                                <td class="p-3 border-r align-top">
+                                    <div class="font-bold text-council-blue mb-1">Position Conseil</div>
+                                    <p class="text-slate-600">La présente directive établit un cadre général tout en préservant les compétences nationales en matière de sécurité souveraine.</p>
+                                </td>
+                                <td class="p-3 align-top bg-emerald-50/30">
+                                    <div class="font-bold text-emerald-800 mb-1">Compromis Proposé</div>
+                                    <p class="text-emerald-900">La présente directive établit un cadre d'harmonisation renforcé garantissant la protection des droits fondamentaux tout en respectant les prérogatives nationales.</p>
+                                </td>
+                            </tr>
+
+                            <!-- Article 2 -->
+                            <tr class="matrix-row">
+                                <td class="p-3 border-r align-top bg-slate-50/30">
+                                    <div class="font-bold text-slate-900 mb-1">Article 2 - Champ d'application</div>
+                                    <p class="text-slate-600">S'applique à toutes les entités traitant des données dans l'UE à compter de la date de transposition.</p>
+                                </td>
+                                <td class="p-3 border-r align-top">
+                                    <div class="font-bold text-ep-red mb-1">AM 2 (PPE / Renew)</div>
+                                    <p class="text-slate-600">Exempte expressément les PME de moins de 250 salariés de la plupart des obligations administratives complexes.</p>
+                                </td>
+                                <td class="p-3 border-r align-top">
+                                    <div class="font-bold text-council-blue mb-1">Position Conseil</div>
+                                    <p class="text-slate-600">Exclut du champ d'application les activités liées à la défense et à la sécurité nationale.</p>
+                                </td>
+                                <td class="p-3 align-top bg-amber-50/30">
+                                    <div class="font-bold text-amber-800 mb-1">En Discussion</div>
+                                    <p class="text-amber-900">Point en réserve pour le Trilogue du 1er décembre.</p>
+                                </td>
+                            </tr>
+
+                            <!-- Article 3 -->
+                            <tr class="matrix-row">
+                                <td class="p-3 border-r align-top bg-slate-50/30">
+                                    <div class="font-bold text-slate-900 mb-1">Article 3 - Entrée en vigueur</div>
+                                    <p class="text-slate-600">Le présent acte entre en vigueur 20 jours après sa publication au Journal Officiel de l'UE.</p>
+                                </td>
+                                <td class="p-3 border-r align-top">
+                                    <div class="font-bold text-ep-red mb-1">AM 3</div>
+                                    <p class="text-slate-600">Inchangé par rapport à la proposition de la Commission.</p>
+                                </td>
+                                <td class="p-3 border-r align-top">
+                                    <div class="font-bold text-council-blue mb-1">Position Conseil</div>
+                                    <p class="text-slate-600">Propose un délai d'adaptation de 24 mois pour les administrations publiques nationales.</p>
+                                </td>
+                                <td class="p-3 align-top bg-emerald-50/30">
+                                    <div class="font-bold text-emerald-800 mb-1">Accord Provisoire</div>
+                                    <p class="text-emerald-900">Entrée en vigueur standard avec période transitoire de 18 mois acceptée par les deux co-législateurs.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: SOUMISSION D'AMENDEMENT -->
+        <section id="tab-amendments" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Amendment Form -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="font-bold text-slate-900 text-base mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-file-circle-plus text-eu-blue"></i> Déposer un Amendement
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Formulaire réservé aux Députés (MEPs) et aux Délégations du Conseil.</p>
+
+                    <form id="amendment-form" onsubmit="handleAmendmentSubmit(event)" class="space-y-4 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Auteur / Statut</label>
+                            <select id="am-author-type" required class="w-full border border-slate-300 rounded-lg p-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-eu-blue focus:outline-none">
+                                <option value="">-- Sélectionnez votre groupe / délégation --</option>
+                                <optgroup label="Parlement Européen">
+                                    <option value="Groupe PPE">Groupe PPE</option>
+                                    <option value="Groupe S&D">Groupe S&amp;D (Rapporteur)</option>
+                                    <option value="Patriotes pour l'Europe">Patriotes pour l'Europe</option>
+                                    <option value="Groupe ECR">Groupe ECR</option>
+                                    <option value="Renew Europe">Renew Europe</option>
+                                    <option value="Verts/ALE">Verts/ALE</option>
+                                    <option value="The Left (GUE)">The Left (GUE)</option>
+                                    <option value="Europe des Nations Souveraines">ESN</option>
+                                </optgroup>
+                                <optgroup label="Conseil de l'UE">
+                                    <option value="Délégation Nationale Conseil">Délégation Nationale (Conseil)</option>
+                                    <option value="Présidence Irlandaise">Présidence Irlandaise</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Nom du Député / Délégué</label>
+                            <input type="text" id="am-author-name" required placeholder="ex: Talie ERGÖÇMEZ / Kenny AGBOTON" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-eu-blue focus:outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Article / Numéro Vise</label>
+                            <input type="text" id="am-article" required placeholder="ex: Article 2, Paragraphe 1" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-eu-blue focus:outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Type d'Amendement</label>
+                            <select id="am-type" class="w-full border border-slate-300 rounded-lg p-2.5 bg-slate-50 focus:ring-2 focus:ring-eu-blue focus:outline-none">
+                                <option value="Modification">Modification du texte</option>
+                                <option value="Suppression">Suppression complète</option>
+                                <option value="Ajout">Ajout d'un nouvel alinéa</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Texte / Modification Proposée</label>
+                            <textarea id="am-text" required rows="4" placeholder="Saisissez la formulation exacte de votre amendement..." class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-eu-blue focus:outline-none"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Justification Synthétique</label>
+                            <textarea id="am-justification" rows="2" placeholder="Brève explication de la motivation politique..." class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-eu-blue focus:outline-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-eu-blue text-white font-bold py-3 rounded-lg hover:bg-blue-800 transition shadow-md flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Transmettre aux Secrétariats
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Live Amendment Repository List -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b pb-3 mb-4">
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                    <i class="fa-solid fa-list-check text-eu-blue"></i> Registre Direct des Amendements Déposés
+                                </h3>
+                                <p class="text-xs text-slate-500">Liste mise à jour en temps réel reçue par la Rapporteur et les Secrétariats.</p>
+                            </div>
+                            <span id="amendment-counter" class="bg-blue-100 text-eu-blue font-bold px-2.5 py-1 rounded-full text-xs">
+                                2 Amendements
+                            </span>
+                        </div>
+
+                        <div id="amendments-list" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 text-xs">
+                            <!-- Initial Mock Amendments -->
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <span class="font-bold text-slate-900">AM-01 — Article 1 § 2</span>
+                                        <div class="text-[11px] text-slate-500">Auteur: <strong class="text-slate-700">Talie ERGÖÇMEZ (S&amp;D - Rapporteur)</strong></div>
+                                    </div>
+                                    <span class="bg-amber-100 text-amber-800 font-bold text-[10px] px-2 py-0.5 rounded">En révision</span>
+                                </div>
+                                <p class="text-slate-700 italic bg-white p-2.5 rounded border border-slate-200 mb-2">
+                                    "Ajouter l'obligation d'évaluation de l'impact social tous les deux ans."
+                                </p>
+                                <div class="text-[11px] text-slate-500">
+                                    <strong>Justification:</strong> Garantie du respect des droits sociaux fondamentaux des travailleurs de l'Union.
+                                </div>
+                            </div>
+
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <span class="font-bold text-slate-900">AM-02 — Article 2 § 4</span>
+                                        <div class="text-[11px] text-slate-500">Auteur: <strong class="text-slate-700">Kenny AGBOTON (Présidence Irlande)</strong></div>
+                                    </div>
+                                    <span class="bg-emerald-100 text-emerald-800 font-bold text-[10px] px-2 py-0.5 rounded">Reçu par Secrétariat</span>
+                                </div>
+                                <p class="text-slate-700 italic bg-white p-2.5 rounded border border-slate-200 mb-2">
+                                    "Permettre un délai d'application étendu de 12 mois additionnels sur demande motivée d'un État membre."
+                                </p>
+                                <div class="text-[11px] text-slate-500">
+                                    <strong>Justification:</strong> Flexibilité nécessaire aux petites administrations nationales.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-200 text-slate-400 text-[11px] text-center">
+                        <i class="fa-solid fa-lock me-1"></i> Transmission sécurisée vers le Secrétariat PE (Nora AFIFI) &amp; Secrétariat Conseil (Souhaib HOUMAID BENYAZZA).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <span class="text-yellow-400 font-bold text-lg">🇪🇺</span>
+                <div>
+                    <p class="text-slate-200 font-semibold">Portail Simulation Codécision — POLI-O409</p>
+                    <p class="text-[11px] text-slate-500">Université libre de Bruxelles | Institut d'Études Européennes</p>
+                </div>
+            </div>
+
+            <div class="text-center md:text-right text-[11px] text-slate-400">
+                <p>Secrétaires Généraux : <span class="text-slate-300">Souhaib HOUMAID BENYAZZA</span> (Conseil) &amp; <span class="text-slate-300">Nora AFIFI</span> (PE)</p>
+                <p class="text-slate-500">Dossier final à remettre le 18/12 à 12h00 sur l'UV et version papier.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application Logic Script -->
+    <script>
+        // Extracted Calendar Data from uploaded documents
+        const simulationCalendar = [
+            { date: "Mardi 6/10", actor: "[Secrétariats]", title: "Mise en route du site web officiel", category: "joint" },
+            { date: "Vendredi 9/10", actor: "[Secrétariat]", title: "Envoi de l'Ordre du Jour", category: "joint" },
+            { date: "Mardi 13/10", actor: "PE & Commission", title: "Réunion préparatoire conjointe PE / Commission", category: "pe" },
+            { date: "Vendredi 16/10", actor: "[Présidence + Secrétariat]", title: "Envoi de l'Ordre du Jour du Conseil", category: "conseil" },
+            { date: "Lundi 19/10 (22h)", actor: "Groupes PE", title: "Remise de l'exposé de position groupe PE", category: "pe" },
+            { date: "Mardi 20/10", actor: "COREPER I", title: "Réunion COREPER I (Commission & Conseil)", category: "conseil" },
+            { date: "Lundi 26/10 (22h)", actor: "Commission", title: "Remise de l'exposé de position Commission", category: "commission" },
+            { date: "Lundi 26/10 (22h)", actor: "[Secrétariat + Rapporteur]", title: "Envoi du projet de rapport (Draft Report)", category: "pe" },
+            { date: "Lundi 26/10 (22h)", actor: "Conseil", title: "Remise de l'exposé de position Conseil", category: "conseil" },
+            { date: "Mardi 3/11 (22h)", actor: "[Eurodéputés]", title: "Envoi des amendements au secrétariat + rapporteur", category: "pe" },
+            { date: "Mardi 10/11 (22h)", actor: "[Secrétariat + Rapporteur]", title: "Envoi ordre du jour + liste des AM + liste de votes", category: "pe" },
+            { date: "Mardi 10/11 (22h)", actor: "[Délégations]", title: "Communication des préférences et amendements à la Présidence", category: "conseil" },
+            { date: "Mardi 17/11", actor: "Commission PE", title: "Vote sur le draft report du rapporteur & mandat de négociation PE", category: "pe" },
+            { date: "Vendredi 20/11", actor: "Organes", title: "Publication de l'avis", category: "joint" },
+            { date: "Lundi 23/11 (12h)", actor: "[Présidence + Secrétariat]", title: "Envoi ordre du jour + proposition d'approche générale", category: "conseil" },
+            { date: "Mardi 24/11 & Vendredi 27/11", actor: "Conseil de l'UE", title: "Adoption du mandat de négociation / Approche Générale", category: "conseil" },
+            { date: "Lundi 30/11", actor: "[Secrétariats en collaboration]", title: "Envoient ordre du jour commun + tableau 4 colonnes", category: "joint" },
+            { date: "Mardi 01/12", actor: "Négociateurs Trilogue", title: "Séance de TRILOGUE (PE, Conseil, Commission)", category: "joint" },
+            { date: "Vendredi 04/12", actor: "[Secrétariats respectivement]", title: "Envoient un ordre du jour à leur institution respective", category: "joint" },
+            { date: "Mardi 08/12", actor: "PE & Conseil", title: "Retour de trilogue et approbation de l'accord interinstitutionnel (2 x 1h) + conférence finale", category: "joint" },
+            { date: "Vendredi 12/12", actor: "[Secrétariats en collaboration]", title: "Publication du texte final arrêté", category: "joint" },
+            { date: "18/12 (12h)", actor: "[Tout le monde]", title: "Remise du dossier de négociation complet sur l'UV et en version papier", category: "joint" }
+        ];
+
+        // Member States Data with population weights for QMV
+        const memberStatesData = [
+            { id: "DE", name: "Allemagne", delegate: "Sasha DUVIVIER", popPct: 18.6 },
+            { id: "FR", name: "France", delegate: "Valeria MARTIN MARTÍNEZ", popPct: 15.1 },
+            { id: "IT", name: "Italie", delegate: "Hippolyte VANECLOO", popPct: 13.3 },
+            { id: "ES", name: "Espagne", delegate: "Léila GHIENNE", popPct: 10.6 },
+            { id: "PL", name: "Pologne", delegate: "Gauthier VAN OUTRYVE", popPct: 8.4 },
+            { id: "RO", name: "Roumanie", delegate: "Vic REMY", popPct: 4.3 },
+            { id: "NL", name: "Pays-Bas", delegate: "Léa BARIGAND", popPct: 3.9 },
+            { id: "BE", name: "Belgique", delegate: "Délégué Belgique", popPct: 2.6 },
+            { id: "GR", name: "Grèce", delegate: "Léanne RENIER", popPct: 2.4 },
+            { id: "CZ", name: "République tchèque", delegate: "Matys DUFRESNOY", popPct: 2.4 },
+            { id: "SE", name: "Suède", delegate: "Jakub CZWORNOG", popPct: 2.3 },
+            { id: "PT", name: "Portugal", delegate: "Théo DE WILDE", popPct: 2.3 },
+            { id: "HU", name: "Hongrie", delegate: "Esteban HUOT-MARCHAND", popPct: 2.2 },
+            { id: "AT", name: "Autriche", delegate: "Eleonore FOUILLOUX", popPct: 2.0 },
+            { id: "DK", name: "Danemark", delegate: "Matthias LEBERT", popPct: 1.3 },
+            { id: "FI", name: "Finlande", delegate: "Chloé THIEBAUX", popPct: 1.2 },
+            { id: "SK", name: "Slovaquie", delegate: "Guillaume VAN DER VEER", popPct: 1.2 },
+            { id: "IE", name: "Irlande (Présidence)", delegate: "Kenny AGBOTON", popPct: 1.1 },
+            { id: "HR", name: "Croatie", delegate: "Hadja DIALLO", popPct: 0.9 },
+            { id: "LT", name: "Lituanie", delegate: "Eva SEMELET", popPct: 0.6 },
+            { id: "SI", name: "Slovénie", delegate: "Délégué Slovénie", popPct: 0.5 },
+            { id: "LV", name: "Lettonie", delegate: "Alexis FURNARI ou MERCIER", popPct: 0.4 },
+            { id: "EE", name: "Estonie", delegate: "Layna MARTENS", popPct: 0.3 },
+            { id: "LU", name: "Luxembourg", delegate: "Margherita NORBIATO", popPct: 0.1 },
+            { id: "MT", name: "Malte", delegate: "Délégué Malte", popPct: 0.1 },
+            { id: "CY", name: "Chypre", delegate: "Délégué Chypre", popPct: 0.2 },
+            { id: "BG", name: "Bulgarie", delegate: "Anne Moisan (Repr.)", popPct: 1.5 }
+        ];
+
+        // EP Political Groups Data
+        const epGroupsData = [
+            {
+                name: "PPE (Parti Populaire Européen)",
+                color: "bg-blue-800 text-white",
+                badgeBg: "bg-blue-100 text-blue-900",
+                members: [
+                    { name: "Nathan SALIFOV", role: "Shadow 1 & Coordinateur" },
+                    { name: "Axel RENARD", role: "Eurodéputé" },
+                    { name: "Nathan COPJN", role: "Eurodéputé" },
+                    { name: "Nicholas GALLAGA", role: "Eurodéputé" },
+                    { name: "Anouk JIMENEZ", role: "Eurodéputé" },
+                    { name: "Nina BONELLI", role: "Eurodéputé" },
+                    { name: "Ilario DI MARCO", role: "Eurodéputé" },
+                    { name: "Steve", role: "Eurodéputé" }
+                ]
+            },
+            {
+                name: "S&D (Alliance Progressiste)",
+                color: "bg-red-700 text-white",
+                badgeBg: "bg-red-100 text-red-900",
+                members: [
+                    { name: "Talie ERGÖÇMEZ", role: "Rapporteur & Coordinateur" },
+                    { name: "Emre BROCATO", role: "Eurodéputé" },
+                    { name: "Luca RONCATO", role: "Eurodéputé" },
+                    { name: "Filippo CHARUEL", role: "Eurodéputé" }
+                ]
+            },
+            {
+                name: "Patriotes pour l'Europe",
+                color: "bg-indigo-900 text-white",
+                badgeBg: "bg-indigo-100 text-indigo-900",
+                members: [
+                    { name: "Clémentine VALENDINO", role: "Shadow & Coordinateur" },
+                    { name: "Chiara Sara DE NÈVE", role: "Eurodéputé" },
+                    { name: "Arthur CARTIER", role: "Eurodéputé" }
+                ]
+            },
+            {
+                name: "ECR (Conservateurs et Réformistes)",
+                color: "bg-cyan-800 text-white",
+                badgeBg: "bg-cyan-100 text-cyan-900",
+                members: [
+                    { name: "Tess DELVAUX DE FENFFE", role: "Shadow" },
+                    { name: "Anne MOISAN", role: "Coordinateur" }
+                ]
+            },
+            {
+                name: "RENEW EUROPE",
+                color: "bg-yellow-500 text-slate-900",
+                badgeBg: "bg-yellow-100 text-yellow-900",
+                members: [
+                    { name: "Clara REEDE", role: "Chair / Présidente" },
+                    { name: "Brecht LEVRAT", role: "Shadow" },
+                    { name: "Clément MALO", role: "Coordinateur" }
+                ]
+            },
+            {
+                name: "Verts/ALE",
+                color: "bg-emerald-600 text-white",
+                badgeBg: "bg-emerald-100 text-emerald-900",
+                members: [
+                    { name: "Adrian DENIS", role: "Shadow" },
+                    { name: "Juliane MENDOZA ROSENDE", role: "Coordinateur" }
+                ]
+            },
+            {
+                name: "The Left (GUE/NGL)",
+                color: "bg-rose-800 text-white",
+                badgeBg: "bg-rose-100 text-rose-900",
+                members: [
+                    { name: "Victor PROVOST", role: "Shadow" }
+                ]
+            },
+            {
+                name: "ESN (Europe des Nations Souveraines)",
+                color: "bg-slate-700 text-white",
+                badgeBg: "bg-slate-200 text-slate-800",
+                members: [
+                    { name: "Benjamin AFIFI", role: "Shadow" }
+                ]
+            }
+        ];
+
+        function switchTab(tabId) {
+            const tabs = ['tab-home', 'tab-calendar', 'tab-council', 'tab-pe', 'tab-matrix', 'tab-amendments'];
+            tabs.forEach(id => {
+                const element = document.getElementById(id);
+                const btn = document.getElementById(`btn-${id}`);
+                if (id === tabId) {
+                    element.classList.remove('hidden');
+                    btn.classList.add('active');
+                } else {
+                    element.classList.add('hidden');
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        function renderCalendar(filter = 'all') {
+            const tbody = document.getElementById('calendar-body');
+            tbody.innerHTML = '';
+
+            const filteredData = simulationCalendar.filter(item => {
+                if (filter === 'all') return true;
+                return item.category === filter;
+            });
+
+            filteredData.forEach(item => {
+                let badgeClass = "bg-slate-100 text-slate-700";
+                if (item.category === 'pe') badgeClass = "bg-red-100 text-red-800";
+                if (item.category === 'conseil') badgeClass = "bg-blue-100 text-blue-800";
+                if (item.category === 'commission') badgeClass = "bg-amber-100 text-amber-800";
+                if (item.category === 'joint') badgeClass = "bg-purple-100 text-purple-800";
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition";
+                tr.innerHTML = `
+                    <td class="p-3.5 font-bold text-slate-900 whitespace-nowrap">${item.date}</td>
+                    <td class="p-3.5 font-semibold text-slate-700">${item.actor}</td>
+                    <td class="p-3.5 text-slate-800 font-medium">${item.title}</td>
+                    <td class="p-3.5">
+                        <span class="text-[10px] font-extrabold uppercase px-2 py-1 rounded ${badgeClass}">${item.category}</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterCalendar(category) {
+            const btnIds = ['all', 'pe', 'conseil', 'commission', 'joint'];
+            btnIds.forEach(cat => {
+                const btn = document.getElementById(`cal-filter-${cat}`);
+                if (cat === category) {
+                    btn.className = "px-3 py-1.5 rounded-lg bg-eu-blue text-white font-semibold transition shadow-sm";
+                } else {
+                    btn.className = "px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 font-semibold hover:bg-slate-200 transition";
+                }
+            });
+            renderCalendar(category);
+        }
+
+        function renderQMVGrid() {
+            const grid = document.getElementById('member-states-grid');
+            const councilList = document.getElementById('council-delegates-list');
+            grid.innerHTML = '';
+            councilList.innerHTML = '';
+
+            memberStatesData.forEach(ms => {
+                // Calculator Checkbox item
+                const div = document.createElement('div');
+                div.className = "flex items-center space-x-2.5 p-2 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 cursor-pointer select-none transition";
+                div.onclick = (e) => {
+                    if(e.target.tagName !== 'INPUT') {
+                        const chk = document.getElementById(`qmv-chk-${ms.id}`);
+                        chk.checked = !chk.checked;
+                        calculateQMV();
+                    }
+                };
+
+                div.innerHTML = `
+                    <input type="checkbox" id="qmv-chk-${ms.id}" onchange="calculateQMV()" class="w-4 h-4 text-eu-blue rounded focus:ring-eu-blue">
+                    <label for="qmv-chk-${ms.id}" class="flex-grow flex justify-between items-center cursor-pointer">
+                        <span class="font-bold text-slate-800">${ms.name}</span>
+                        <span class="text-[10px] text-slate-500 font-medium">${ms.popPct}% pop</span>
+                    </label>
+                `;
+                grid.appendChild(div);
+
+                // Council Delegate Directory item
+                const delegateDiv = document.createElement('div');
+                delegateDiv.className = "p-2.5 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center";
+                delegateDiv.innerHTML = `
+                    <div>
+                        <div class="font-bold text-slate-900">${ms.name}</div>
+                        <div class="text-[11px] text-slate-500">${ms.delegate}</div>
+                    </div>
+                    <span class="bg-blue-100 text-council-blue text-[10px] font-bold px-2 py-0.5 rounded">
+                        ${ms.popPct}%
+                    </span>
+                `;
+                councilList.appendChild(delegateDiv);
+            });
+        }
+
+        function calculateQMV() {
+            let checkedCount = 0;
+            let totalPopPct = 0;
+
+            memberStatesData.forEach(ms => {
+                const chk = document.getElementById(`qmv-chk-${ms.id}`);
+                if (chk && chk.checked) {
+                    checkedCount++;
+                    totalPopPct += ms.popPct;
+                }
+            });
+
+            const msPct = ((checkedCount / 27) * 100).toFixed(1);
+            totalPopPct = Math.min(100, totalPopPct.toFixed(1));
+
+            const isMsPass = checkedCount >= 15; // 55% of 27 Member States
+            const isPopPass = totalPopPct >= 65.0; // 65% of Population
+
+            // Update MS Card UI
+            document.getElementById('qmv-ms-count').innerText = `${checkedCount} / 27`;
+            document.getElementById('qmv-ms-pct').innerText = `${msPct}% des États membres`;
+            document.getElementById('qmv-ms-bar').style.width = `${msPct}%`;
+            
+            const msStatus = document.getElementById('qmv-ms-status');
+            if (isMsPass) {
+                msStatus.innerText = "VALIDE (≥15)";
+                msStatus.className = "font-bold text-emerald-600";
+                document.getElementById('qmv-ms-bar').className = "bg-emerald-500 h-full transition-all duration-300";
+            } else {
+                msStatus.innerText = "Non Atteint";
+                msStatus.className = "font-bold text-red-600";
+                document.getElementById('qmv-ms-bar').className = "bg-red-500 h-full transition-all duration-300";
+            }
+
+            // Update Pop Card UI
+            document.getElementById('qmv-pop-count').innerText = `${totalPopPct}%`;
+            document.getElementById('qmv-pop-bar').style.width = `${totalPopPct}%`;
+
+            const popStatus = document.getElementById('qmv-pop-status');
+            if (isPopPass) {
+                popStatus.innerText = "VALIDE (≥65%)";
+                popStatus.className = "font-bold text-emerald-600";
+                document.getElementById('qmv-pop-bar').className = "bg-emerald-500 h-full transition-all duration-300";
+            } else {
+                popStatus.innerText = "Non Atteint";
+                popStatus.className = "font-bold text-red-600";
+                document.getElementById('qmv-pop-bar').className = "bg-red-500 h-full transition-all duration-300";
+            }
+
+            // Overall Outcome
+            const outcomeCard = document.getElementById('qmv-final-decision');
+            if (isMsPass && isPopPass) {
+                outcomeCard.className = "p-3 rounded-xl bg-emerald-100 text-emerald-800 text-center font-bold text-sm mb-6 border border-emerald-300 flex items-center justify-center gap-2 shadow-sm";
+                outcomeCard.innerHTML = `<i class="fa-solid fa-circle-check text-lg text-emerald-600"></i> L'Approche Générale est ADOPTÉE par le Conseil à la Majorité Qualifiée !`;
+            } else {
+                outcomeCard.className = "p-3 rounded-xl bg-red-100 text-red-800 text-center font-bold text-sm mb-6 border border-red-200 flex items-center justify-center gap-2";
+                outcomeCard.innerHTML = `<i class="fa-solid fa-circle-xmark text-lg text-red-600"></i> L'Approche Générale est actuellement REJETÉE par le Conseil.`;
+            }
+        }
+
+        function selectAllQMV(select) {
+            memberStatesData.forEach(ms => {
+                const chk = document.getElementById(`qmv-chk-${ms.id}`);
+                if (chk) chk.checked = select;
+            });
+            calculateQMV();
+        }
+
+        function resetQMV() {
+            selectAllQMV(false);
+        }
+
+        function renderEPGroups() {
+            const container = document.getElementById('ep-groups-container');
+            container.innerHTML = '';
+
+            epGroupsData.forEach(grp => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm flex flex-col justify-between";
+                
+                let memberItems = grp.members.map(m => `
+                    <div class="p-2 bg-slate-50 rounded-lg flex justify-between items-center text-xs">
+                        <span class="font-semibold text-slate-800">${m.name}</span>
+                        <span class="text-[10px] text-slate-500 font-medium bg-slate-200 px-1.5 py-0.5 rounded">${m.role}</span>
+                    </div>
+                `).join('');
+
+                card.innerHTML = `
+                    <div>
+                        <div class="p-3 ${grp.color} font-bold text-xs flex justify-between items-center">
+                            <span>${grp.name}</span>
+                            <span class="text-[10px] bg-black/20 px-2 py-0.5 rounded">${grp.members.length} membre(s)</span>
+                        </div>
+                        <div class="p-3 space-y-1.5 max-h-64 overflow-y-auto">
+                            ${memberItems}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterMatrix() {
+            const query = document.getElementById('matrix-search').value.toLowerCase();
+            const rows = document.querySelectorAll('.matrix-row');
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        let amendmentCount = 2;
+        function handleAmendmentSubmit(event) {
+            event.preventDefault();
+
+            amendmentCount++;
+            const authorType = document.getElementById('am-author-type').value;
+            const authorName = document.getElementById('am-author-name').value;
+            const article = document.getElementById('am-article').value;
+            const amType = document.getElementById('am-type').value;
+            const amText = document.getElementById('am-text').value;
+            const justification = document.getElementById('am-justification').value;
+
+            const list = document.getElementById('amendments-list');
+
+            const amCard = document.createElement('div');
+            amCard.className = "p-4 bg-slate-50 rounded-xl border border-slate-200 animate-fade-in";
+            amCard.innerHTML = `
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <span class="font-bold text-slate-900">AM-0${amendmentCount} — ${article} (${amType})</span>
+                        <div class="text-[11px] text-slate-500">Auteur: <strong class="text-slate-700">${authorName} (${authorType})</strong></div>
+                    </div>
+                    <span class="bg-blue-100 text-eu-blue font-bold text-[10px] px-2 py-0.5 rounded">Reçu par Secrétariat</span>
+                </div>
+                <p class="text-slate-700 italic bg-white p-2.5 rounded border border-slate-200 mb-2">
+                    "${amText}"
+                </p>
+                <div class="text-[11px] text-slate-500">
+                    <strong>Justification:</strong> ${justification || 'Aucune justification fournie.'}
+                </div>
+            `;
+
+            list.prepend(amCard);
+            document.getElementById('amendment-counter').innerText = `${amendmentCount} Amendements`;
+
+            // Reset Form
+            document.getElementById('amendment-form').reset();
+
+            // Notification Feedback
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-check"></i> Amendement Transmis avec Succès!`;
+            btn.className = "w-full bg-emerald-600 text-white font-bold py-3 rounded-lg transition shadow-md flex items-center justify-center gap-2";
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.className = "w-full bg-eu-blue text-white font-bold py-3 rounded-lg hover:bg-blue-800 transition shadow-md flex items-center justify-center gap-2";
+            }, 2500);
+        }
+
+        window.onload = function() {
+            renderCalendar('all');
+            renderQMVGrid();
+            renderEPGroups();
+            calculateQMV();
+        };
+    </script>
+</body>
+</html>
